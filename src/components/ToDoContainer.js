@@ -24,7 +24,9 @@ const ToDoContainer = () =>{
                 method:'POST',
             })
             res.then((respose)=>{
-                setTask([...respose.data, ...isTask])
+                setTask((prevState) => {
+                    return [...prevState, respose.data] 
+                })
                 setResetForm(true);
             })
         }         
@@ -55,9 +57,10 @@ const ToDoContainer = () =>{
         if(taskComplet){
             const res = axios.put(`https://todos-academlo.herokuapp.com/api/todo/${taskComplet.id}`,taskComplet);
             res.then((respose) =>{
-                setTask((prevState) =>{
-                    prevState.map((task)=>{
-                        if(task._id === respose.data._id ){
+                setTask((prevState) => {
+                    
+                    return prevState.map((task)=>{
+                        if(task._id !== respose.data._id ){
                             return task;
                         }
                         return {...respose.data};
